@@ -278,6 +278,104 @@
   window.Powder.register('scroll-highlight', { init: init });
 })();
 
+/* ===== features-tabs.js ===== */
+/* ===== features-tabs.js ===== */
+/* Core Features 步骤标签：点击切换 + 自动轮播，切换同一图片舞台
+   对照原站：4 个步骤标签，同一时刻只显示当前步骤描述与其配图
+   无 JS 时保持首屏（第 1 步）不变 */
+
+(function () {
+  'use strict';
+
+  function createInstance(root) {
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('[data-powder-tab-index]'));
+    var descs = Array.prototype.slice.call(root.querySelectorAll('[data-powder-tab-desc]'));
+    var imgs = Array.prototype.slice.call(root.querySelectorAll('[data-powder-tab-img]'));
+    if (!tabs.length) return null;
+
+    var interval = parseInt(root.getAttribute('data-interval'), 10);
+    if (isNaN(interval) || interval < 1500) interval = 6000;
+    var allowAutoplay = root.getAttribute('data-autoplay') !== 'false';
+
+    var current = 0;
+    var timer = null;
+
+    function apply(index) {
+      tabs.forEach(function (el, i) {
+        var on = i === index;
+        el.classList.toggle('is-active', on);
+        el.setAttribute('aria-selected', on ? 'true' : 'false');
+        el.setAttribute('tabindex', on ? '0' : '-1');
+      });
+      descs.forEach(function (el, i) {
+        el.classList.toggle('is-active', i === index);
+      });
+      imgs.forEach(function (el, i) {
+        el.classList.toggle('is-active', i === index);
+      });
+      current = index;
+    }
+
+    function stop() {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function start() {
+      if (!allowAutoplay || timer || tabs.length < 2) return;
+      timer = window.setInterval(function () {
+        apply((current + 1) % tabs.length);
+      }, interval);
+    }
+
+    tabs.forEach(function (el, i) {
+      el.addEventListener('click', function () {
+        stop();
+        apply(i);
+      });
+      el.addEventListener('keydown', function (ev) {
+        if (ev.key !== 'ArrowRight' && ev.key !== 'ArrowLeft') return;
+        ev.preventDefault();
+        stop();
+        var next = ev.key === 'ArrowRight' ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
+        apply(next);
+        tabs[next].focus();
+      });
+    });
+
+    apply(0);
+    return { start: start, stop: stop };
+  }
+
+  function init(ctx) {
+    var roots = document.querySelectorAll('[data-powder-tabs]');
+    if (!roots.length) return;
+
+    var instances = Array.prototype.slice
+      .call(roots)
+      .map(createInstance)
+      .filter(Boolean);
+    if (!instances.length) return;
+
+    // 动效关闭或用户偏好减少动画时：保留点击切换，不自动轮播
+    if (ctx.animations && !ctx.reducedMotion) {
+      instances.forEach(function (inst) {
+        inst.start();
+      });
+      document.addEventListener('visibilitychange', function () {
+        instances.forEach(function (inst) {
+          if (document.hidden) inst.stop();
+          else inst.start();
+        });
+      });
+    }
+  }
+
+  window.Powder.register('features-tabs', { init: init });
+})();
+
 /* ===== carousel.js ===== */
 /* ===== carousel.js ===== */
 /* 产品/评价轮播：位移 transform + 圆点指示 + 可选自动播放 */

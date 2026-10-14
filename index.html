@@ -88,11 +88,11 @@
 <section class="powder-section powder-hero" id="hero" aria-label="Hero">
   <div class="powder-hero__bg" aria-hidden="true">
     
-      <img class="powder-hero__bg-img" src="/test/images/hero-hills-1.png" alt="" loading="eager" decoding="async">
+      <img class="powder-hero__bg-img" src="/test/images/hero-bg-1.png" alt="" loading="eager" decoding="async">
     
-      <img class="powder-hero__bg-img" src="/test/images/hero-hills-2.png" alt="" loading="lazy" decoding="async">
+      <img class="powder-hero__bg-img" src="/test/images/hero-bg-2.png" alt="" loading="lazy" decoding="async">
     
-      <img class="powder-hero__bg-img" src="/test/images/hero-hills-3.png" alt="" loading="lazy" decoding="async">
+      <img class="powder-hero__bg-img" src="/test/images/hero-bg-3.png" alt="" loading="lazy" decoding="async">
     
     <div class="powder-hero__bg-overlay"></div>
   </div>
@@ -203,7 +203,9 @@
       </div>
     </div>
     
-    <div class="powder-intro__ticker" aria-hidden="true"></div>
+    <div class="powder-intro__ticker" aria-hidden="true">
+      <img src="/test/images/ticker-visual.png" alt="" loading="lazy" decoding="async">
+    </div>
   </div>
 </section>
 
@@ -216,7 +218,11 @@
     
     
       
-<section class="powder-section powder-features" id="features" aria-label="Core features">
+
+<section class="powder-section powder-features" id="features" aria-label="Core features"
+         data-powder-tabs
+         data-interval="6000"
+         data-autoplay="true">
   <div class="powder-container">
     
 <div class="powder-section-heading">
@@ -232,33 +238,54 @@
   
 </div>
 
-    <ol class="powder-features__grid">
+
+    <div class="powder-features__tabs" role="tablist" aria-label="Core features steps">
       
-        <li class="powder-feature" data-powder-reveal>
-          <span class="powder-feature__index" aria-hidden="true">01</span>
-          <h3 class="powder-feature__name">Ask</h3>
-          <p class="powder-feature__desc">Start with a question and move faster from the first prompt.</p>
-        </li>
+        <button class="powder-features__tab is-active" type="button" role="tab"
+                aria-selected="true"
+                data-powder-tab-index="0">Ask</button>
       
-        <li class="powder-feature" data-powder-reveal>
-          <span class="powder-feature__index" aria-hidden="true">02</span>
-          <h3 class="powder-feature__name">Verify</h3>
-          <p class="powder-feature__desc">Every answer links back to the exact source it came from.</p>
-        </li>
+        <button class="powder-features__tab" type="button" role="tab"
+                aria-selected="false"
+                data-powder-tab-index="1">Verify</button>
       
-        <li class="powder-feature" data-powder-reveal>
-          <span class="powder-feature__index" aria-hidden="true">03</span>
-          <h3 class="powder-feature__name">Execute</h3>
-          <p class="powder-feature__desc">Turn answers into tickets, drafts, and updates in one flow.</p>
-        </li>
+        <button class="powder-features__tab" type="button" role="tab"
+                aria-selected="false"
+                data-powder-tab-index="2">Execute</button>
       
-        <li class="powder-feature" data-powder-reveal>
-          <span class="powder-feature__index" aria-hidden="true">04</span>
-          <h3 class="powder-feature__name">Measure</h3>
-          <p class="powder-feature__desc">See what your team asks and where work gets stuck.</p>
-        </li>
+        <button class="powder-features__tab" type="button" role="tab"
+                aria-selected="false"
+                data-powder-tab-index="3">Measure</button>
       
-    </ol>
+    </div>
+
+    <div class="powder-features__panel">
+      
+        <p class="powder-features__desc is-active" data-powder-tab-desc="0">Start with a question and move faster from the first prompt.</p>
+      
+        <p class="powder-features__desc" data-powder-tab-desc="1">Every answer links back to the exact source it came from.</p>
+      
+        <p class="powder-features__desc" data-powder-tab-desc="2">Turn answers into tickets, drafts, and updates in one flow.</p>
+      
+        <p class="powder-features__desc" data-powder-tab-desc="3">See what your team asks and where work gets stuck.</p>
+      
+    </div>
+
+    <div class="powder-features__stage">
+      
+        <img class="powder-features__img is-active" src="/test/images/feature-1.jpg" alt="Ask"
+             loading="eager" decoding="async" data-powder-tab-img="0">
+      
+        <img class="powder-features__img" src="/test/images/feature-2.jpg" alt="Verify"
+             loading="lazy" decoding="async" data-powder-tab-img="1">
+      
+        <img class="powder-features__img" src="/test/images/feature-3.jpg" alt="Execute"
+             loading="lazy" decoding="async" data-powder-tab-img="2">
+      
+        <img class="powder-features__img" src="/test/images/feature-4.jpg" alt="Measure"
+             loading="lazy" decoding="async" data-powder-tab-img="3">
+      
+    </div>
   </div>
 </section>
 
@@ -349,7 +376,7 @@
             <p class="powder-showcase__note">One source of truth for every reply.</p>
           </div>
           <div class="powder-showcase__media">
-            <img class="powder-showcase__img" src="/test/images/product-ask.jpg" alt="Powder chat answering a question with connected sources" loading="lazy" decoding="async" width="946" height="1002">
+            <img class="powder-showcase__img" src="/test/images/whatyouget-1.jpg" alt="Powder chat answering a question with connected sources" loading="lazy" decoding="async" width="946" height="1002">
           </div>
         </article>
       
@@ -361,7 +388,7 @@
             <p class="powder-showcase__note">From question to action in one flow.</p>
           </div>
           <div class="powder-showcase__media">
-            <img class="powder-showcase__img" src="/test/images/product-execute.jpg" alt="Powder action preview creating a ticket" loading="lazy" decoding="async" width="946" height="1002">
+            <img class="powder-showcase__img" src="/test/images/whatyouget-2.jpg" alt="Powder action preview creating a ticket" loading="lazy" decoding="async" width="946" height="1002">
           </div>
         </article>
       
@@ -373,7 +400,7 @@
             <p class="powder-showcase__note">Clear signals from real conversations.</p>
           </div>
           <div class="powder-showcase__media">
-            <img class="powder-showcase__img" src="/test/images/product-measure.jpg" alt="Powder analytics dashboard with insights" loading="lazy" decoding="async" width="946" height="1002">
+            <img class="powder-showcase__img" src="/test/images/whatyouget-3.jpg" alt="Powder analytics dashboard with insights" loading="lazy" decoding="async" width="946" height="1002">
           </div>
         </article>
       
@@ -575,6 +602,32 @@
         </div>
       
     </dl>
+
+    
+      
+      <div class="powder-numbers__strip" aria-hidden="true">
+        <div class="powder-numbers__track">
+          
+            <img class="powder-numbers__shot" src="/test/images/hero-bg-1.png" alt="" loading="lazy" decoding="async">
+          
+            <img class="powder-numbers__shot" src="/test/images/hero-bg-2.png" alt="" loading="lazy" decoding="async">
+          
+            <img class="powder-numbers__shot" src="/test/images/numbers-1.png" alt="" loading="lazy" decoding="async">
+          
+            <img class="powder-numbers__shot" src="/test/images/numbers-2.png" alt="" loading="lazy" decoding="async">
+          
+          
+            <img class="powder-numbers__shot" src="/test/images/hero-bg-1.png" alt="" loading="lazy" decoding="async">
+          
+            <img class="powder-numbers__shot" src="/test/images/hero-bg-2.png" alt="" loading="lazy" decoding="async">
+          
+            <img class="powder-numbers__shot" src="/test/images/numbers-1.png" alt="" loading="lazy" decoding="async">
+          
+            <img class="powder-numbers__shot" src="/test/images/numbers-2.png" alt="" loading="lazy" decoding="async">
+          
+        </div>
+      </div>
+    
   </div>
 </section>
 
@@ -890,48 +943,74 @@
       <div class="powder-carousel__viewport">
         <ul class="powder-carousel__track">
           
+            
             <li class="powder-testimonial" data-powder-reveal>
-              <blockquote class="powder-testimonial__quote">We cut our average ticket resolution time from 12 minutes to under 3. Powder pulls the right answer from our docs before our agents even finish reading the ticket.</blockquote>
-              <figcaption class="powder-testimonial__author">
-                <img class="powder-testimonial__avatar" src="/test/images/avatar-1.jpg" alt="" width="48" height="48" loading="lazy" decoding="async">
-                <span class="powder-testimonial__meta">
-                  <span class="powder-testimonial__name">Sarah Chen</span>
-                  <span class="powder-testimonial__role">Head of Support, Layerform</span>
-                </span>
-              </figcaption>
+              <img class="powder-testimonial__photo" src="/test/images/testimonial-1.jpg" alt="Sarah Chen" loading="lazy" decoding="async">
+              <div class="powder-testimonial__body">
+                <blockquote class="powder-testimonial__quote">We cut our average ticket resolution time from 12 minutes to under 3. Powder pulls the right answer from our docs before our agents even finish reading the ticket.</blockquote>
+                <figcaption class="powder-testimonial__author">
+                  <span class="powder-testimonial__meta">
+                    <span class="powder-testimonial__name">Sarah Chen</span>
+                    <span class="powder-testimonial__role">Head of Support, Layerform</span>
+                  </span>
+                </figcaption>
+              </div>
             </li>
           
+            
             <li class="powder-testimonial" data-powder-reveal>
-              <blockquote class="powder-testimonial__quote">Powder replaced three tools for us. Every answer comes with the source attached, so nobody has to take the AI's word for it.</blockquote>
-              <figcaption class="powder-testimonial__author">
-                <img class="powder-testimonial__avatar" src="/test/images/avatar-2.jpg" alt="" width="48" height="48" loading="lazy" decoding="async">
-                <span class="powder-testimonial__meta">
-                  <span class="powder-testimonial__name">James Whitfield</span>
-                  <span class="powder-testimonial__role">VP Operations, Northwind</span>
-                </span>
-              </figcaption>
+              <img class="powder-testimonial__photo" src="/test/images/testimonial-2.jpg" alt="James Whitfield" loading="lazy" decoding="async">
+              <div class="powder-testimonial__body">
+                <blockquote class="powder-testimonial__quote">We cut our average ticket resolution time from 12 minutes to under 3. Powder pulls the right answer from our docs before our agents even finish reading the ticket.</blockquote>
+                <figcaption class="powder-testimonial__author">
+                  <span class="powder-testimonial__meta">
+                    <span class="powder-testimonial__name">James Whitfield</span>
+                    <span class="powder-testimonial__role">VP Operations, Northwind</span>
+                  </span>
+                </figcaption>
+              </div>
             </li>
           
+            
             <li class="powder-testimonial" data-powder-reveal>
-              <blockquote class="powder-testimonial__quote">Onboarding a new support agent used to take two weeks. With Powder they are answering real tickets on day one.</blockquote>
-              <figcaption class="powder-testimonial__author">
-                <img class="powder-testimonial__avatar" src="/test/images/avatar-3.jpg" alt="" width="48" height="48" loading="lazy" decoding="async">
-                <span class="powder-testimonial__meta">
-                  <span class="powder-testimonial__name">Priya Nair</span>
-                  <span class="powder-testimonial__role">Support Lead, Cadence</span>
-                </span>
-              </figcaption>
+              <img class="powder-testimonial__photo" src="/test/images/testimonial-3.jpg" alt="Priya Nair" loading="lazy" decoding="async">
+              <div class="powder-testimonial__body">
+                <blockquote class="powder-testimonial__quote">We cut our average ticket resolution time from 12 minutes to under 3. Powder pulls the right answer from our docs before our agents even finish reading the ticket.</blockquote>
+                <figcaption class="powder-testimonial__author">
+                  <span class="powder-testimonial__meta">
+                    <span class="powder-testimonial__name">Priya Nair</span>
+                    <span class="powder-testimonial__role">Support Lead, Cadence</span>
+                  </span>
+                </figcaption>
+              </div>
             </li>
           
+            
             <li class="powder-testimonial" data-powder-reveal>
-              <blockquote class="powder-testimonial__quote">The approval gates give our security team peace of mind. Actions only run when a human says so.</blockquote>
-              <figcaption class="powder-testimonial__author">
-                <img class="powder-testimonial__avatar" src="/test/images/avatar-4.jpg" alt="" width="48" height="48" loading="lazy" decoding="async">
-                <span class="powder-testimonial__meta">
-                  <span class="powder-testimonial__name">Marco Silva</span>
-                  <span class="powder-testimonial__role">IT Director, Helio</span>
-                </span>
-              </figcaption>
+              <img class="powder-testimonial__photo" src="/test/images/testimonial-4.jpg" alt="Marco Silva" loading="lazy" decoding="async">
+              <div class="powder-testimonial__body">
+                <blockquote class="powder-testimonial__quote">We cut our average ticket resolution time from 12 minutes to under 3. Powder pulls the right answer from our docs before our agents even finish reading the ticket.</blockquote>
+                <figcaption class="powder-testimonial__author">
+                  <span class="powder-testimonial__meta">
+                    <span class="powder-testimonial__name">Marco Silva</span>
+                    <span class="powder-testimonial__role">IT Director, Helio</span>
+                  </span>
+                </figcaption>
+              </div>
+            </li>
+          
+            
+            <li class="powder-testimonial" data-powder-reveal>
+              <img class="powder-testimonial__photo" src="/test/images/testimonial-5.jpg" alt="Elena Rossi" loading="lazy" decoding="async">
+              <div class="powder-testimonial__body">
+                <blockquote class="powder-testimonial__quote">We cut our average ticket resolution time from 12 minutes to under 3. Powder pulls the right answer from our docs before our agents even finish reading the ticket.</blockquote>
+                <figcaption class="powder-testimonial__author">
+                  <span class="powder-testimonial__meta">
+                    <span class="powder-testimonial__name">Elena Rossi</span>
+                    <span class="powder-testimonial__role">Head of CX, Brightline</span>
+                  </span>
+                </figcaption>
+              </div>
             </li>
           
         </ul>
@@ -979,33 +1058,48 @@
 
     <ul class="powder-blog__grid">
       
+        
+        
         <li class="powder-post-card" data-powder-reveal>
           <a class="powder-post-card__link" href="/test/blog/5-prompts-every-sales-rep-should-save/">
-            
-            <h3 class="powder-post-card__title">5 Prompts Every Sales Rep Should Save</h3>
-            <time class="powder-post-card__date" datetime="2026-01-31T09:00:00.000Z">Jan 31, 2026</time>
-            <span class="powder-post-card__arrow" aria-hidden="true"><svg class="powder-post-card__arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-</span>
+            <span class="powder-post-card__cover">
+              <img src="/test/images/blog-1.jpg" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="powder-post-card__body">
+              
+              <h3 class="powder-post-card__title">5 Prompts Every Sales Rep Should Save</h3>
+              <time class="powder-post-card__date" datetime="2026-01-31T09:00:00.000Z">Jan 31, 2026</time>
+            </span>
           </a>
         </li>
       
+        
+        
         <li class="powder-post-card" data-powder-reveal>
           <a class="powder-post-card__link" href="/test/blog/building-trust-in-ai-outputs-why-source-attribution-matters/">
-            
-            <h3 class="powder-post-card__title">Building Trust in AI Outputs: Why Source Attribution Matters</h3>
-            <time class="powder-post-card__date" datetime="2026-02-21T09:00:00.000Z">Feb 21, 2026</time>
-            <span class="powder-post-card__arrow" aria-hidden="true"><svg class="powder-post-card__arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-</span>
+            <span class="powder-post-card__cover">
+              <img src="/test/images/blog-2.jpg" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="powder-post-card__body">
+              
+              <h3 class="powder-post-card__title">Building Trust in AI Outputs: Why Source Attribution Matters</h3>
+              <time class="powder-post-card__date" datetime="2026-02-21T09:00:00.000Z">Feb 21, 2026</time>
+            </span>
           </a>
         </li>
       
+        
+        
         <li class="powder-post-card" data-powder-reveal>
           <a class="powder-post-card__link" href="/test/blog/connecting-your-stack-a-practical-integration-guide/">
-            
-            <h3 class="powder-post-card__title">Connecting Your Stack: A Practical Integration Guide</h3>
-            <time class="powder-post-card__date" datetime="2026-01-17T09:00:00.000Z">Jan 17, 2026</time>
-            <span class="powder-post-card__arrow" aria-hidden="true"><svg class="powder-post-card__arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-</span>
+            <span class="powder-post-card__cover">
+              <img src="/test/images/blog-3.jpg" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="powder-post-card__body">
+              
+              <h3 class="powder-post-card__title">Connecting Your Stack: A Practical Integration Guide</h3>
+              <time class="powder-post-card__date" datetime="2026-01-17T09:00:00.000Z">Jan 17, 2026</time>
+            </span>
           </a>
         </li>
       

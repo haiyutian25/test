@@ -1051,39 +1051,63 @@ body.powder-nav-open {
 
 /* ===== sections/blog.css ===== */
 /* ===== sections/blog.css ===== */
-/* 文章卡片（首页摘要 + 相关文章共用） */
+/* 文章卡片（首页摘要 + 相关文章共用）
+   规格取自原站实测：卡片 355×463、内边距 8px、
+   封面上内边距内 339×254（4:3，圆角 8px 8px 4px 4px、黑底），文字块在其下方
+   网格：3 列，列间距 8px（1080 = 3×355 + 2×8 附近） */
 
 .powder-blog__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-grid-gap);
+  gap: 8px;
 }
 
 .powder-post-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-  transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+  padding: 8px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  transition: transform 240ms ease;
 }
 
 .powder-post-card:hover {
   transform: translateY(-4px);
-  border-color: var(--color-border-strong);
-  box-shadow: var(--effect-shadow-card);
 }
 
 .powder-post-card__link {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 26px;
-  min-height: 200px;
+  gap: 8px;
+}
+
+/* 封面：4:3，黑底，圆角 8/8/4/4 */
+.powder-post-card__cover {
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px 8px 4px 4px;
+  overflow: hidden;
+  background: #000;
+}
+
+.powder-post-card__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 文字块 */
+.powder-post-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
 }
 
 .powder-post-card__category {
   align-self: flex-start;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   font-size: 11px;
@@ -1094,33 +1118,14 @@ body.powder-nav-open {
 .powder-post-card__title {
   font-size: var(--font-size-h4);
   font-weight: var(--weight-medium);
-  line-height: 1.4;
+  line-height: 1.35;
   letter-spacing: -0.01em;
 }
 
 .powder-post-card__date {
-  margin-top: auto;
   color: var(--color-text-faint);
   font-size: var(--font-size-xs);
   letter-spacing: 0.04em;
-}
-
-.powder-post-card__arrow {
-  position: absolute;
-  top: 26px;
-  right: 26px;
-  color: var(--color-text-faint);
-  transition: color 200ms ease, transform 200ms ease;
-}
-
-.powder-post-card__arrow-icon {
-  width: 17px;
-  height: 17px;
-}
-
-.powder-post-card:hover .powder-post-card__arrow {
-  color: var(--color-text-primary);
-  transform: translate(3px, -3px);
 }
 
 @media (max-width: 900px) {
@@ -1385,74 +1390,101 @@ body.powder-nav-open {
 
 /* ===== sections/features.css ===== */
 /* ===== sections/features.css ===== */
-/* Core Features：四步流程 */
+/* Core Features：四步流程（标签切换同一图片舞台）
+   规格取自原站实测：标签行 16px、间距 36px；舞台 1080×607（原站图 1080×607）
+   标签行整体高约 162px（含当前步骤描述区） */
 
-.powder-features__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-grid-gap);
-}
-
-.powder-feature {
-  position: relative;
+.powder-features__tabs {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: var(--space-card-padding);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  transition: transform 240ms ease, border-color 240ms ease;
+  flex-wrap: wrap;
+  gap: 8px 36px;
+  margin-bottom: 16px;
 }
 
-.powder-feature:hover {
-  transform: translateY(-3px);
-  border-color: var(--color-border-strong);
+.powder-features__tab {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 16px;
+  letter-spacing: -0.32px;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: color 220ms ease;
 }
 
-.powder-feature__index {
-  font-size: var(--font-size-xs);
-  letter-spacing: 0.1em;
-  color: var(--color-text-faint);
+.powder-features__tab:hover,
+.powder-features__tab.is-active {
+  color: rgb(255, 243, 240);
 }
 
-.powder-feature__name {
-  font-size: var(--font-size-h3);
-  font-weight: var(--weight-medium);
+.powder-features__tab:focus-visible {
+  outline: 2px solid var(--color-border-strong);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
-.powder-feature__desc {
+/* 当前步骤描述：一次只显示一条 */
+.powder-features__panel {
+  min-height: 56px;
+  margin-bottom: 40px;
+}
+
+.powder-features__desc {
+  display: none;
+  max-width: 620px;
   color: var(--color-text-muted);
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-body);
   line-height: 1.6;
 }
 
-/* 步骤间的连接箭头 */
-.powder-feature:not(:last-child)::after {
-  content: '';
+.powder-features__desc.is-active {
+  display: block;
+}
+
+/* 图片舞台：4 张叠放，切换显示 */
+.powder-features__stage {
+  position: relative;
+  aspect-ratio: 1080 / 607;
+  border-radius: var(--radius-card-large);
+  overflow: hidden;
+  background: #000;
+}
+
+.powder-features__img {
   position: absolute;
-  top: 50%;
-  right: calc(var(--space-grid-gap) / -2 - 5px);
-  width: 10px;
-  height: 10px;
-  border-top: 1.5px solid var(--color-border-strong);
-  border-right: 1.5px solid var(--color-border-strong);
-  transform: translateY(-50%) rotate(45deg);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.powder-features__img.is-active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .powder-features__img {
+    transition: none;
+  }
 }
 
 @media (max-width: 900px) {
-  .powder-features__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .powder-features__tabs {
+    gap: 8px 24px;
   }
 
-  .powder-feature::after {
-    display: none;
+  .powder-features__stage {
+    border-radius: var(--radius-card);
   }
 }
 
 @media (max-width: 640px) {
-  .powder-features__grid {
-    grid-template-columns: 1fr;
+  .powder-features__panel {
+    min-height: 0;
+    margin-bottom: 24px;
   }
 }
 
@@ -1801,11 +1833,15 @@ body.powder-nav-open {
   gap: 80px;
 }
 
-/* Ticker：原站 Intro 内 1080×120 的装饰占位（无可见内容），
-   保留其在纵向节奏中的作用 */
+/* Ticker：原站 Intro 内的装饰横幅（实测图片 1425×190，占位 1080×120） */
 .powder-intro__ticker {
-  height: 120px;
   pointer-events: none;
+}
+
+.powder-intro__ticker img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* 文本列：桌面端右偏，窄屏占满 */
@@ -1908,6 +1944,67 @@ body.powder-nav-open {
 @media (max-width: 640px) {
   .powder-logos__list {
     gap: 32px;
+  }
+}
+
+/* ===== sections/numbers-strip.css ===== */
+/* ===== sections/numbers-strip.css ===== */
+/* Numbers 内的横向截图条（对照原站：宽图 2.7~2.9:1，无级横向循环）
+   无 JS/减少动画时退化为可横向滚动，图片仍可见 */
+
+@keyframes powder-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.powder-numbers__strip {
+  margin-top: 72px;
+  overflow: hidden;
+}
+
+.powder-numbers__track {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: max-content;
+  animation: powder-marquee 48s linear infinite;
+}
+
+.powder-numbers__shot {
+  height: 340px;
+  width: auto;
+  border-radius: var(--radius-card);
+  background: #000;
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .powder-numbers__strip {
+    overflow-x: auto;
+  }
+
+  .powder-numbers__track {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .powder-numbers__strip {
+    margin-top: 48px;
+  }
+
+  .powder-numbers__shot {
+    height: 220px;
+  }
+}
+
+@media (max-width: 640px) {
+  .powder-numbers__shot {
+    height: 170px;
   }
 }
 
@@ -2195,7 +2292,7 @@ body.powder-nav-open {
 
 .powder-showcase__img {
   width: 100%;
-  aspect-ratio: 946 / 1002;
+  aspect-ratio: 479 / 551;
   object-fit: cover;
   transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -2235,15 +2332,48 @@ body:not(.powder-animations) .powder-carousel__track {
   gap: var(--space-grid-gap);
 }
 
+/* 卡片：左侧竖版人物照（原站 378×560）+ 右侧引言
+   对照原站实测：照片宽 378，占卡片约 35%，与引言并排 */
 .powder-testimonial {
   flex: 0 0 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  padding: 48px;
+  display: grid;
+  grid-template-columns: minmax(0, 378px) minmax(0, 1fr);
+  align-items: center;
+  gap: 48px;
+  padding: 32px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card-large);
+}
+
+.powder-testimonial__photo {
+  width: 100%;
+  aspect-ratio: 378 / 560;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+}
+
+@media (max-width: 900px) {
+  .powder-testimonial {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .powder-testimonial__photo {
+    max-height: 380px;
+    max-width: 260px;
+  }
+
+  .powder-testimonial__body {
+    gap: 20px;
+  }
+}
+
+.powder-testimonial__body {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 body:not(.powder-animations) .powder-testimonial {
