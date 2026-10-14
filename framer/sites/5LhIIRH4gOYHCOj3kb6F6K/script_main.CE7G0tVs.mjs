@@ -6816,15 +6816,6 @@ t(() => {
     let e = document.getElementById(`main`);
     `framerHydrateV2` in e.dataset ? Gi(!0, e) : Gi(!1, e);
   }
-  (function () {
-    Xi &&
-      l(() => {
-        te(
-          document.getElementById(`__framer-badge-container`),
-          g(_, {}, g(f(() => import(`./PX9hIOIVM.rRN19Iw0.mjs`)))),
-        );
-      });
   })();
-})();
 export { Hi as getLayoutTemplateBreakpoints, Ui as getPageRoot };
 //# sourceMappingURL=script_main.CE7G0tVs.mjs.map
