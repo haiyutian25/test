@@ -12193,7 +12193,7 @@ function D_(e) {
     (t = e.url.startsWith(`https://fonts.gstatic.com/s/`)
       ? `google`
       : e.url.startsWith(
-            `./framer/third-party-assets/fontshare/`,
+            `/test/framer/third-party-assets/fontshare/`,
           )
         ? `fontshare`
         : `custom`),

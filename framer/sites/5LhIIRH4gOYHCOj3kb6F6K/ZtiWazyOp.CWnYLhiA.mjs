@@ -1192,7 +1192,7 @@ var K,
             chunks: [
               new URL(
                 `./ZtiWazyOp-chunk-default-0.framercms`,
-                new URL(`./framer/modules/baFwUaIQskvuxoVG6GhZ/TNWehSsO9gz5Ef5A0vAF/ZtiWazyOp.js`, document.baseURI).href,
+                new URL(`/test/framer/modules/baFwUaIQskvuxoVG6GhZ/TNWehSsO9gz5Ef5A0vAF/ZtiWazyOp.js`, document.baseURI).href,
               ).href.replace(`/modules/`, `/cms/`),
             ],
             id: `7f46eaab-3a7c-4374-a6ed-cf8b9c12b9e9default`,
