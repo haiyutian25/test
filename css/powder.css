@@ -49,7 +49,7 @@
   --space-grid-gap: 24px;
   --space-card-padding: 28px;
   --space-element-gap: 16px;
-  --layout-content-width: 1200px;
+  --layout-content-width: 1080px;
   --layout-content-width-narrow: 760px;
   --layout-header-height: 72px;
   --layout-gutter: 24px;
@@ -199,19 +199,44 @@ ol {
   top: 12px;
 }
 
-/* 小标签 pill */
+/* 区块标签胶囊（规格取自设计稿 Chip 组件 + 原站实测）
+   padding 4px 16px · radius 393px · gap 12px · bg rgba(255,255,255,.1)
+   圆点 7px rgb(255,243,240) · 文本 14px / 400 / -0.28px / rgba(255,255,255,.8)
+   注意：胶囊左边缘与内容列齐平，文本因此内缩 35px（16 + 7 + 12） */
 .powder-chip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  background: var(--color-button-secondary-bg);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-label);
-  line-height: 1.4;
-  letter-spacing: 0.01em;
+  gap: 12px;
+  padding: 4px 16px;
+  border: 0;
+  border-radius: 393px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.28px;
+  white-space: nowrap;
+}
+
+.powder-chip__dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgb(255, 243, 240);
+}
+
+/* 浅色区块上的深色胶囊（原站 Changelog / Numbers 用法） */
+.powder-chip--dark {
+  background: rgba(15, 15, 15, 0.85);
+}
+
+/* 无胶囊版：仅圆点 + 文本（原站图文条目标题） */
+.powder-chip--plain {
+  padding: 0;
+  background: none;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 /* 文字高亮（标题中重点片段） */
@@ -1760,34 +1785,86 @@ body.powder-nav-open {
 
 /* ===== sections/intro.css ===== */
 /* ===== sections/intro.css ===== */
-/* Intro 滚动阅读区：品牌宣言文字
-   规格取自 Powder 原站实测（桌面 1280 断点）：
-   Inter / 22px / 500 / letter-spacing -0.66px / line-height 29.7px / #fff3f0 */
+/* Intro 滚动阅读区：区块 chip + 品牌宣言文字
+   规格取自设计稿（Intro → content / Layout → Text Column）与原站实测：
+   content padding 180px 0；文本列 x=450（相对容器右偏 270px）宽 540px；
+   chip → 文本 gap 36px；段落 Inter 28px / 1.35 / -0.03em / 500 / #fff3f0 */
 
-.powder-intro {
-  padding: var(--space-section-padding) 0;
+/* 注意：需压过 `.powder-section + .powder-section { padding-top: 0 }`（0,2,0） */
+.powder-intro.powder-section {
+  padding: 180px 0;
 }
 
 .powder-intro__inner {
   display: flex;
   flex-direction: column;
+  gap: 80px;
+}
+
+/* Ticker：原站 Intro 内 1080×120 的装饰占位（无可见内容），
+   保留其在纵向节奏中的作用 */
+.powder-intro__ticker {
+  height: 120px;
+  pointer-events: none;
+}
+
+/* 文本列：桌面端右偏，窄屏占满 */
+.powder-intro__column {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  margin-left: 270px;
+  max-width: 540px;
+}
+
+/* chip：原站该处文本为 65% 白（随滚动高亮态变化） */
+.powder-intro__column .powder-chip {
+  align-self: flex-start;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.powder-intro__text {
+  display: flex;
+  flex-direction: column;
   gap: 40px;
-  max-width: 720px;
 }
 
 .powder-intro__para {
-  font-size: 22px;
-  line-height: 29.7px;
+  font-size: 28px;
+  line-height: 1.35;
   letter-spacing: -0.03em;
   font-weight: var(--weight-medium);
   color: var(--color-text-hero);
 }
 
-/* 默认态（JS 未启用高亮时）：全部清晰可读，无 JS 不失真 */
+@media (max-width: 1200px) {
+  .powder-intro__column {
+    margin-left: 0;
+    max-width: none;
+  }
+}
+
 @media (max-width: 900px) {
+  .powder-intro.powder-section {
+    padding: 96px 0;
+  }
+
+  .powder-intro__para {
+    font-size: 22px;
+  }
+
+  .powder-intro__text {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .powder-intro.powder-section {
+    padding: 72px 0;
+  }
+
   .powder-intro__para {
     font-size: 19px;
-    line-height: 1.35;
   }
 }
 

@@ -182,13 +182,15 @@
 
 /* ===== scroll-highlight.js ===== */
 /* ===== scroll-highlight.js ===== */
-/* 滚动文字高亮（对照 Powder 原站实测行为实现）
-   原站机制（实测）：
-     - 以「整段」为单位，不做逐字/逐词点亮
-     - 每段两态：未激活 opacity 0.25，激活 opacity 1
-     - 触发规则：当前激活段 = 顶边最接近「视口高度 × targetLine」这条线的段落
-       （原站采样：视口高 1257 时，线≈528px，6/6 采样点与实测状态一致）
-     - 阈值触发的时间过渡，约 350ms ease-out（不是滚动进度映射）
+/* 滚动文字高亮（对照 Powder 原站手机端实测语义）
+   实测数据（原站 390×844，目标线 = 0.42 × vh = 354）：
+     第 1 段顶边距线 +110 / +60 → 0.25 / 1  ⇒ 未进入窄带前保持灰色
+     距线 −40 / −90            → 1 / 0.25  ⇒ 滚出窄带后同样熄灭
+   结论：
+     - 段落只有在顶边进入「目标线 ± 10% 视口高」的窄带内才点亮
+     - **未滚到位置前全部保持灰色**，滚过之后也熄灭（不是累积高亮）
+     - 同一时刻至多一段点亮（窄带内取最接近线者），都不在带内则全部熄灭
+     - 两态：未激活 opacity 0.25 / 激活 1；阈值触发的时间过渡 350ms ease-out
    实现：只切换 class，过渡交给 CSS；多实例独立；遵循 prefers-reduced-motion。 */
 
 (function () {
@@ -203,27 +205,25 @@
     var targetLine = parseFloat(container.getAttribute('data-target-line'));
     if (isNaN(targetLine)) targetLine = 0.42;
 
-    // 记录当前激活索引，避免每帧无谓的 class 操作
-    var current = -1;
+    // 触发带宽（相对视口高的一半宽度）：0.1 → 目标线 ±10% vh
+    var band = parseFloat(container.getAttribute('data-highlight-band'));
+    if (isNaN(band)) band = 0.1;
+
+    // -2 表示尚未初始化（区别于 -1 = 当前无激活段）
+    var current = -2;
 
     function computeActive(vh) {
       var line = vh * targetLine;
-      var best = 0;
+      var half = vh * band;
+      var best = -1;
       var bestDist = Infinity;
       for (var i = 0; i < paragraphs.length; i += 1) {
-        var rect = paragraphs[i].getBoundingClientRect();
-        // 完全不可见的段落不参与竞争（避免远距离仍被判为最近）
-        if (rect.bottom < 0 || rect.top > vh) continue;
-        var dist = Math.abs(rect.top - line);
-        if (dist < bestDist) {
+        // 只比较顶边到目标线的距离：进入窄带才参与点亮
+        var dist = Math.abs(paragraphs[i].getBoundingClientRect().top - line);
+        if (dist <= half && dist < bestDist) {
           bestDist = dist;
           best = i;
         }
-      }
-      // 若全部在视口外（未滚动到 / 已滚过），回退到最靠近视口的那一端
-      if (bestDist === Infinity) {
-        var firstTop = paragraphs[0].getBoundingClientRect().top;
-        return firstTop > 0 ? 0 : paragraphs.length - 1;
       }
       return best;
     }
