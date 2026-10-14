@@ -182,70 +182,62 @@
 
 /* ===== scroll-highlight.js ===== */
 /* ===== scroll-highlight.js ===== */
-/* 滚动文字高亮（重点组件）
-   行为：文字进入视口激活区后，随滚动进度逐词点亮。
-   实现：JS 拆分文字为词 span（保留原始文本，无 JS 时模板原文可读），
-        rAF 节流的 scroll 计算进度，只切换 class，不触发重排。
-   多实例独立工作；遵循 prefers-reduced-motion。 */
+/* 滚动文字高亮（对照 Powder 原站实测行为实现）
+   原站机制（实测）：
+     - 以「整段」为单位，不做逐字/逐词点亮
+     - 每段两态：未激活 opacity 0.25，激活 opacity 1
+     - 触发规则：当前激活段 = 顶边最接近「视口高度 × targetLine」这条线的段落
+       （原站采样：视口高 1257 时，线≈528px，6/6 采样点与实测状态一致）
+     - 阈值触发的时间过渡，约 350ms ease-out（不是滚动进度映射）
+   实现：只切换 class，过渡交给 CSS；多实例独立；遵循 prefers-reduced-motion。 */
 
 (function () {
   'use strict';
 
-  function splitWords(paragraph) {
-    // 以空格切分但保留空白，保证无 JS 时文本一致
-    var parts = paragraph.textContent.split(/(\s+)/);
-    var frag = document.createDocumentFragment();
-    parts.forEach(function (part) {
-      if (part === '') return;
-      if (/^\s+$/.test(part)) {
-        frag.appendChild(document.createTextNode(part));
-        return;
-      }
-      var span = document.createElement('span');
-      span.className = 'powder-hl-word';
-      span.textContent = part;
-      frag.appendChild(span);
-    });
-    paragraph.textContent = '';
-    paragraph.appendChild(frag);
-    return Array.prototype.slice.call(paragraph.querySelectorAll('.powder-hl-word'));
-  }
-
   function createInstance(container) {
-    var zoneStart = parseFloat(container.getAttribute('data-zone-start')) || 0.25;
-    var zoneEnd = parseFloat(container.getAttribute('data-zone-end')) || 0.75;
     var paragraphs = Array.prototype.slice.call(
       container.querySelectorAll('[data-powder-highlight-text]')
     );
+    if (!paragraphs.length) return null;
 
-    var entries = paragraphs.map(function (p) {
-      return { words: splitWords(p), el: p };
-    });
+    var targetLine = parseFloat(container.getAttribute('data-target-line'));
+    if (isNaN(targetLine)) targetLine = 0.42;
+
+    // 记录当前激活索引，避免每帧无谓的 class 操作
+    var current = -1;
+
+    function computeActive(vh) {
+      var line = vh * targetLine;
+      var best = 0;
+      var bestDist = Infinity;
+      for (var i = 0; i < paragraphs.length; i += 1) {
+        var rect = paragraphs[i].getBoundingClientRect();
+        // 完全不可见的段落不参与竞争（避免远距离仍被判为最近）
+        if (rect.bottom < 0 || rect.top > vh) continue;
+        var dist = Math.abs(rect.top - line);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      }
+      // 若全部在视口外（未滚动到 / 已滚过），回退到最靠近视口的那一端
+      if (bestDist === Infinity) {
+        var firstTop = paragraphs[0].getBoundingClientRect().top;
+        return firstTop > 0 ? 0 : paragraphs.length - 1;
+      }
+      return best;
+    }
 
     container.classList.add('is-highlight-ready');
 
     function update() {
-      var vh = window.innerHeight;
-      var zoneTop = vh * zoneStart;
-      var zoneBottom = vh * zoneEnd;
-      var zoneHeight = zoneBottom - zoneTop;
-
-      entries.forEach(function (entry) {
-        var rect = entry.el.getBoundingClientRect();
-        if (rect.bottom < zoneTop - vh * 0.5 || rect.top > vh * 1.5) {
-          // 远离视口：全部熄灭，避免无谓 class 操作
-          entry.words.forEach(function (w) {
-            w.classList.remove('is-active');
-          });
-          return;
-        }
-        var progress = (zoneBottom - rect.top) / (zoneHeight + rect.height);
-        progress = Math.max(0, Math.min(1, progress));
-        var activeCount = Math.ceil(progress * entry.words.length);
-        entry.words.forEach(function (w, i) {
-          w.classList.toggle('is-active', i < activeCount);
-        });
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      var active = computeActive(vh);
+      if (active === current) return;
+      paragraphs.forEach(function (p, i) {
+        p.classList.toggle('is-active', i === active);
       });
+      current = active;
     }
 
     return { update: update };
@@ -260,7 +252,11 @@
       return;
     }
 
-    var instances = Array.prototype.slice.call(containers).map(createInstance);
+    var instances = Array.prototype.slice
+      .call(containers)
+      .map(createInstance)
+      .filter(Boolean);
+    if (!instances.length) return;
 
     var ticking = false;
     function onScroll() {

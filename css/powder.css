@@ -1760,7 +1760,9 @@ body.powder-nav-open {
 
 /* ===== sections/intro.css ===== */
 /* ===== sections/intro.css ===== */
-/* Intro 滚动阅读区：大号品牌宣言文字 */
+/* Intro 滚动阅读区：品牌宣言文字
+   规格取自 Powder 原站实测（桌面 1280 断点）：
+   Inter / 22px / 500 / letter-spacing -0.66px / line-height 29.7px / #fff3f0 */
 
 .powder-intro {
   padding: var(--space-section-padding) 0;
@@ -1770,33 +1772,22 @@ body.powder-nav-open {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  max-width: 960px;
+  max-width: 720px;
 }
 
 .powder-intro__para {
-  font-size: clamp(26px, 3.6vw, 44px);
-  line-height: 1.28;
-  letter-spacing: -0.02em;
+  font-size: 22px;
+  line-height: 29.7px;
+  letter-spacing: -0.03em;
   font-weight: var(--weight-medium);
-  color: var(--color-text-primary);
+  color: var(--color-text-hero);
 }
 
-/* JS 启用高亮前的默认态：全部清晰可读（无 JS 时不失真） */
-.powder-intro__para .powder-hl-word {
-  transition: opacity 320ms ease, color 320ms ease;
-}
-
-body.powder-animations .powder-intro.is-highlight-ready .powder-hl-word {
-  opacity: 0.35;
-}
-
-body.powder-animations .powder-intro.is-highlight-ready .powder-hl-word.is-active {
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .powder-intro__para .powder-hl-word {
-    transition: none;
+/* 默认态（JS 未启用高亮时）：全部清晰可读，无 JS 不失真 */
+@media (max-width: 900px) {
+  .powder-intro__para {
+    font-size: 19px;
+    line-height: 1.35;
   }
 }
 
@@ -3218,29 +3209,27 @@ body.powder-animations [data-powder-reveal].is-revealed {
 
 /* ===== animations/scroll-highlight.css ===== */
 /* ===== animations/scroll-highlight.css ===== */
-/* 滚动文字高亮的滚动进度映射态（scroll-highlight.js 驱动） */
+/* 滚动阅读高亮（对照 Powder 原站实测）
+   两态：未激活 0.25 / 激活 1；阈值触发，过渡 350ms ease-out */
 
-.powder-intro__para {
-  transition: opacity 320ms ease;
+body.powder-animations .powder-intro.is-highlight-ready .powder-intro__para {
+  opacity: var(--hl-inactive-opacity, 0.25);
+  transition: opacity var(--hl-duration, 350ms) var(--hl-easing, ease-out);
 }
 
-/* JS 拆分文字后的词元素 */
-.powder-hl-word {
-  display: inline-block;
-  white-space: pre;
-}
-
-/* 逐词进度映射：激活词全亮，其余按配置降低透明度 */
-body.powder-animations .powder-intro.is-highlight-ready .powder-hl-word {
-  opacity: var(--hl-inactive-opacity, 0.35);
-}
-
-body.powder-animations .powder-intro.is-highlight-ready .powder-hl-word.is-active {
+body.powder-animations .powder-intro.is-highlight-ready .powder-intro__para.is-active {
   opacity: var(--hl-active-opacity, 1);
 }
 
+/* 段落内的强调文字随整段一起变化，不做逐字处理 */
+.powder-intro__para strong,
+.powder-intro__para b {
+  font-weight: inherit;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  body.powder-animations .powder-intro.is-highlight-ready .powder-hl-word {
+  body.powder-animations .powder-intro.is-highlight-ready .powder-intro__para {
     opacity: 1;
+    transition: none;
   }
 }
