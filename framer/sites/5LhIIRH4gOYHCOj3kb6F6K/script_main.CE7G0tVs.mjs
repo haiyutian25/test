@@ -4063,20 +4063,6 @@ var Yr = t(() => {
                         nodeId: `FuJKiCxBE`,
                         rendersWithMotion: !0,
                         scopeId: `Ihsypfxzf`,
-                        children: C(Zr, {
-                          E4hO1mC86: `0px 0.48174984141951427px 1.252549587690737px -1.25px rgba(0, 0, 0, 0.29), 0px 1.8308266425947657px 4.760149270746391px -2.5px rgba(0, 0, 0, 0.25), 0px 8px 20.8px -3.75px rgba(0, 0, 0, 0.1)`,
-                          fRshTFsLS: `https://framer.link/JpHG5KZ`,
-                          GhTPLFC8V: `rgba(36, 37, 38, 0.63)`,
-                          height: `100%`,
-                          id: `FuJKiCxBE`,
-                          layoutId: `FuJKiCxBE`,
-                          width: `100%`,
-                          WXgYL__f6: {
-                            borderColor: `rgba(255, 255, 255, 0.07)`,
-                            borderStyle: `solid`,
-                            borderWidth: 1,
-                          },
-                        }),
                       }),
                     }),
                     C(V, {
